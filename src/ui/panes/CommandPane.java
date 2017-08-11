@@ -48,7 +48,8 @@ public class CommandPane extends BorderPane {
         
         
         command.setOnKeyTyped(value -> {
-            send.setDisable(!text.getText().trim().isEmpty());
+            send.setDisable(command.getText().trim().isEmpty());
+            System.out.println("send.setDisable("+command.getText().trim().isEmpty()+");");
         });
 
         this.send.setOnAction(event -> {

@@ -24,25 +24,25 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     private final String attempting;
     private boolean finished = false;
     private final MamieMail mamieMail;
-    public final int MAX_TRIES = 10;
-    private final long DURATION = 60000; // 1 minute    
+    public final int MAX_TRIES = 3;
+    private final long DURATION = 30000; // 1/2 minute    
 
     public boolean isFinished() {
         return finished;
     }
 
     /**
-     * Envoi une commande et attend son résultat. 
+     * Envoi une commande et attend son résultat.
+     *
      * @param mamieMail
      * @param date
      * @param subject
      * @param body
      * @param attempting
      * @throws MessagingException
-     * @throws FileNotFoundException 
+     * @throws FileNotFoundException
      */
-    public SendACommandeAndWaitForResultTask(
-            MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
+    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
         this.attempting = attempting;
         this.mamieMail = mamieMail;
@@ -50,7 +50,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
             @Override
             public void run() {
                 try {
-                    System.out.println("Envoi de la commande : (" + subject + ")["+ body + "]");
+                    System.out.println("Envoi de la commande : (" + subject + ")[" + body + "]");
                     MamieMail.send(subject, body);
                     System.out.println("Commande envoyée");
                 } catch (FileNotFoundException ex) {
@@ -59,21 +59,21 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
                 }
             }
         }.start();
-        
+
     }
 
-    
     public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String attempting) throws MessagingException, FileNotFoundException {
         this(mamieMail, date, subject, "", attempting);
-    } 
+    }
 
     @Override
     protected Message call() throws Exception {
         System.out.println("Recherche dans la boîte mail...");
-        stopTiming();          
+        stopTiming();
         updateMessage("Recherche dans la boîte mail...");
         int nbTries = 0;
         updateProgress(nbTries, MAX_TRIES);
+        Message message = null;
         while (!finished) {
             try {
                 System.out.println("Dans la boucle");
@@ -81,43 +81,39 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
                 ++nbTries;
                 updateProgress(nbTries, MAX_TRIES);
                 System.out.println("Essai °" + nbTries);
-                Message message = mamieMail.getLastMessagesAfter(attempting, date);
+                message = mamieMail.getLastMessagesAfter(attempting, date);
                 if (message != null) {
                     finished = true;
                 }
             } catch (InterruptedException ex) {
-                Message message = mamieMail.getLastMessagesAfter(attempting, date);
-                if (message != null) {
-                    finished = true;
-                }
+                message = mamieMail.getLastMessagesAfter(attempting, date);
+                finished = true;
             }
         }
         updateProgress(MAX_TRIES, MAX_TRIES);
-        Message message = mamieMail.getLastMessagesAfter(attempting, date);
         if (message == null) {
-                    updateMessage("Problème avec le serveur !");
-                } else {
-                    System.out.println(message.getSubject());
+            updateMessage("Le message dont le sujet est " + attempting + " n'a pas été reçu dans le temps imparti");
+        } else {
+            System.out.println(message.getSubject());
 
-                    Multipart mp = (Multipart) message.getContent();
+            Multipart mp = (Multipart) message.getContent();
 
-                    String result = mp.getBodyPart(0).getContent().toString();
-                    String convertedResult = conversionEncoding(result, "ISO-8859-1", "UTF-8");          
+            String result = mp.getBodyPart(0).getContent().toString();
+            String convertedResult = conversionEncoding(result, "ISO-8859-1", "UTF-8");
 
-                    if (convertedResult.equals("cat: lmes: Aucun fichier ou dossier de ce type")) {
-                        convertedResult = "Ecran noir";
-                    } else if (convertedResult.trim().isEmpty()) {
-                        convertedResult = "Ecran vide";
-                    }
-                    System.out.println(convertedResult);
+            if (convertedResult.equals("cat: lmes: Aucun fichier ou dossier de ce type")) {
+                convertedResult = "Ecran noir";
+            } else if (convertedResult.trim().isEmpty()) {
+                convertedResult = "Ecran vide";
+            }
+            System.out.println(convertedResult);
 
-                    updateMessage(convertedResult);
-                    updateValue(message);
-                }
+            updateMessage(convertedResult);
+            updateValue(message);
+        }
         finished = true;
         return message;
     }
-
 
     private void stopTiming() {
         new Thread() {
