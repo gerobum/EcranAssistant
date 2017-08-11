@@ -16,6 +16,7 @@ import ui.panes.CardPane;
 import ui.panes.CommandPane;
 import ui.panes.ListPane;
 import ui.panes.ScreenCopyPane;
+import ui.panes.SupPane;
 
 /**
  *
@@ -54,6 +55,7 @@ public class MainStage extends Application {
         card.add("Envoi de messages", new SendTextPane());
         card.add("Liste des messages", new ListPane(card));
         card.add("Commande", new CommandPane(card));
+        card.add("Suppression", new SupPane());
         
         //card.add("FONT", new FontSizePane());
     }
