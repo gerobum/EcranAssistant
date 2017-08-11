@@ -15,7 +15,7 @@ import javax.mail.MessagingException;
 import ui.panes.CardPane;
 import ui.panes.CommandPane;
 import ui.panes.ListPane;
-import ui.panes.ScrotPane;
+import ui.panes.ScreenCopyPane;
 
 /**
  *
@@ -50,7 +50,7 @@ public class MainStage extends Application {
     }
 
     private void addPanesToStack() throws MessagingException, FileNotFoundException {
-        card.add("Copie d'écran", new ScrotPane());
+        card.add("Copie d'écran", new ScreenCopyPane());
         card.add("Envoi de messages", new SendTextPane());
         card.add("Liste des messages", new ListPane());
         card.add("Commande", new CommandPane());

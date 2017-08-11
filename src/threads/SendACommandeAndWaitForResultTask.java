@@ -7,8 +7,6 @@ package threads;
 
 import java.io.FileNotFoundException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -20,10 +18,10 @@ import static uses.Usefull.conversionEncoding;
  *
  * @author maillot
  */
-public class SendACommandeAndWaitForResultTask extends Task<String> {
+public class SendACommandeAndWaitForResultTask extends Task<Message> {
 
     private final Date date;
-    private final String command;
+    //private final String command;
     private final String attempting;
     private boolean finished = false;
     private final MamieMail mamieMail;
@@ -34,10 +32,20 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
         return finished;
     }
 
-
-    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
+    /**
+     * Envoi une commande et attend son résultat. 
+     * @param mamieMail
+     * @param date
+     * @param subject
+     * @param body
+     * @param attempting
+     * @throws MessagingException
+     * @throws FileNotFoundException 
+     */
+    public SendACommandeAndWaitForResultTask(
+            MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
-        this.command = subject;
+        //this.command = subject;
         this.attempting = attempting;
         this.mamieMail = mamieMail;
         new Thread() {
@@ -62,7 +70,7 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
     } 
 
     @Override
-    protected String call() throws Exception {
+    protected Message call() throws Exception {
         System.out.println("Recherche dans la boîte mail...");
         stopTiming();          
         updateMessage("Recherche dans la boîte mail...");
@@ -96,7 +104,7 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
                     Multipart mp = (Multipart) message.getContent();
 
                     String result = mp.getBodyPart(0).getContent().toString();
-                    String convertedResult = conversionEncoding(result, "ISO-8859-1", "UTF-8");
+                    String convertedResult = conversionEncoding(result, "ISO-8859-1", "UTF-8");          
 
                     if (convertedResult.equals("cat: lmes: Aucun fichier ou dossier de ce type")) {
                         convertedResult = "Ecran noir";
@@ -106,10 +114,10 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
                     System.out.println(convertedResult);
 
                     updateMessage(convertedResult);
-                    updateValue(convertedResult);
+                    updateValue(message);
                 }
         finished = true;
-        return message.toString();
+        return message;
     }
 
 
