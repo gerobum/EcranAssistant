@@ -61,6 +61,7 @@ public class CommandPane extends BorderPane {
                     text.setText(wfam.getMessage());
                     //send.setText("Relancer une recherche");
                     send.setDisable(false);
+                    System.out.println("Commande passée");
                     again = false;
                 });
                 launchSec();

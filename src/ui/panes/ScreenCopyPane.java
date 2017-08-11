@@ -52,7 +52,7 @@ public class ScreenCopyPane extends BorderPane {
                 wfam.setOnSucceeded(value -> {
                     System.out.println("Copie d'écran reçue : ");
                     MimeMessage message = (MimeMessage) wfam.getValue();
-
+                    send.setDisable(false);
                     try {
                         //if (message.getContent().getClass() == MimeMultipart.class) {
                             MimeMultipart content = (MimeMultipart) message.getContent();

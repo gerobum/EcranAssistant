@@ -21,7 +21,6 @@ import static uses.Usefull.conversionEncoding;
 public class SendACommandeAndWaitForResultTask extends Task<Message> {
 
     private final Date date;
-    //private final String command;
     private final String attempting;
     private boolean finished = false;
     private final MamieMail mamieMail;
@@ -45,14 +44,13 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     public SendACommandeAndWaitForResultTask(
             MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
-        //this.command = subject;
         this.attempting = attempting;
         this.mamieMail = mamieMail;
         new Thread() {
             @Override
             public void run() {
                 try {
-                    System.out.println("Envoi de la commande");
+                    System.out.println("Envoi de la commande : (" + subject + ")["+ body + "]");
                     MamieMail.send(subject, body);
                     System.out.println("Commande envoyée");
                 } catch (FileNotFoundException ex) {
