@@ -4,6 +4,10 @@
 .passwd-yvan
 .adresse-mamie
 .passwd-mamie
+.adresse-yvan_rasp
+.passwd-yvan_rasp
+.adresse-mamie_rasp
+.passwd-mamie_rasp
 .adresse-gerobum
 .passwd-gerobum
 javax.mail.jar

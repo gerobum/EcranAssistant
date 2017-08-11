@@ -32,7 +32,7 @@ public class CardPane extends Pane {
 
     private final BorderPane mainPane = new BorderPane();
     private final FlowPane north = new FlowPane();
-    private final RadioButton here, mamie, tv;
+    private final RadioButton gerobum, mamie_rasp, yvan_rasp;
     private final StackPane center = new StackPane();
     private final List<Pair<Button, Pane>> list = new LinkedList<>();
     private Group root;
@@ -46,19 +46,19 @@ public class CardPane extends Pane {
                 + " -fx-border-radius: 0.0");
         BorderPane.setMargin(center, new Insets(8, 0, 0, 0));
 
-        here = new RadioButton("Ici");
-        mamie = new RadioButton("Mamie");
-        tv = new RadioButton("Derrière la télé");
+        gerobum = new RadioButton("gerobum@gmail.com");
+        mamie_rasp = new RadioButton("mamie.rasp@gmail.com");
+        yvan_rasp = new RadioButton("yvan.rasp@gmail.com");
         ToggleGroup tg = new ToggleGroup();
 
         EventHandler<ActionEvent> eh = (ActionEvent event) -> {
             try {
-                if (here.isSelected()) {
+                if (gerobum.isSelected()) {
                     Usefull.changeTo("gerobum");
-                } else if (mamie.isSelected()) {
-                    Usefull.changeTo("mamie");
+                } else if (mamie_rasp.isSelected()) {
+                    Usefull.changeTo("mamie_rasp");
                 } else {
-                    Usefull.changeTo("yvan");
+                    Usefull.changeTo("yvan_rasp");
                 }
             } catch (FileNotFoundException e) {
                 Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e);
@@ -66,21 +66,21 @@ public class CardPane extends Pane {
             }
         };
 
-        mamie.setToggleGroup(tg);
-        mamie.setOnAction(eh);
-        tv.setToggleGroup(tg);
-        tv.setOnAction(eh);
-        here.setToggleGroup(tg);
-        here.setOnAction(eh);
-        here.setSelected(true);
+        mamie_rasp.setToggleGroup(tg);
+        mamie_rasp.setOnAction(eh);
+        yvan_rasp.setToggleGroup(tg);
+        yvan_rasp.setOnAction(eh);
+        gerobum.setToggleGroup(tg);
+        gerobum.setOnAction(eh);
+        gerobum.setSelected(true);
         try {
             Usefull.changeTo("gerobum");
         } catch (FileNotFoundException e) {
-            Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e);
+            Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e.getMessage());
             alert.showAndWait();
         }
 
-        FlowPane south = new FlowPane(mamie, tv, here);
+        FlowPane south = new FlowPane(mamie_rasp, yvan_rasp, gerobum);
         south.setHgap(20);
         mainPane.setBottom(south);
     }
