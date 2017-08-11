@@ -12,7 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javax.mail.MessagingException;
-import mail.MamieMail;
+import mail.GMail;
 import threads.SendACommandeAndWaitForResultTask;
 
 /**
@@ -26,7 +26,7 @@ public class CommandPane extends BorderPane {
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
     private final ProgressBar pbsec;
-    private final MamieMail mamieMail;
+    private final GMail mamieMail;
     private boolean again = true;
     private final TextField command;
 
@@ -43,7 +43,7 @@ public class CommandPane extends BorderPane {
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new MamieMail();
+        mamieMail = new GMail();
         
         
         

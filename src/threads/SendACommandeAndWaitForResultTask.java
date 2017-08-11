@@ -11,7 +11,7 @@ import javafx.concurrent.Task;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
-import mail.MamieMail;
+import mail.GMail;
 import static uses.Usefull.conversionEncoding;
 
 /**
@@ -23,7 +23,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     private final Date date;
     private final String attempting;
     private boolean finished = false;
-    private final MamieMail mamieMail;
+    private final GMail mamieMail;
     public final int MAX_TRIES = 3;
     private final long DURATION = 30000; // 1/2 minute    
 
@@ -42,7 +42,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
      * @throws MessagingException
      * @throws FileNotFoundException
      */
-    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
+    public SendACommandeAndWaitForResultTask(GMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
         this.attempting = attempting;
         this.mamieMail = mamieMail;
@@ -51,7 +51,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
             public void run() {
                 try {
                     System.out.println("Envoi de la commande : (" + subject + ")[" + body + "]");
-                    MamieMail.send(subject, body);
+                    GMail.send(subject, body);
                     System.out.println("Commande envoyée");
                 } catch (FileNotFoundException ex) {
                     System.out.println("Erreur de commande");
@@ -62,7 +62,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
 
     }
 
-    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String attempting) throws MessagingException, FileNotFoundException {
+    public SendACommandeAndWaitForResultTask(GMail mamieMail, Date date, String subject, String attempting) throws MessagingException, FileNotFoundException {
         this(mamieMail, date, subject, "", attempting);
     }
 

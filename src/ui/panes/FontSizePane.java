@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.layout.FlowPane;
-import mail.MamieMail;
+import mail.GMail;
 
 /**
  *
@@ -23,7 +23,7 @@ public class FontSizePane extends FlowPane {
         this.send = new Button("Changer la taille des fontes");
         this.send.setOnAction(event -> {
             try {
-                MamieMail.send("ALL FONT", "8");
+                GMail.send("ALL FONT", "8");
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FontSizePane.class.getName()).log(Level.SEVERE, null, ex);
             }

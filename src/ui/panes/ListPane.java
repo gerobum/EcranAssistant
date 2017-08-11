@@ -16,7 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javax.mail.MessagingException;
-import mail.MamieMail;
+import mail.GMail;
 import threads.SendACommandeAndWaitForResultTask;
 
 /**
@@ -30,7 +30,7 @@ public class ListPane extends BorderPane {
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
     private final ProgressBar pbsec;
-    private final MamieMail mamieMail;
+    private final GMail mamieMail;
     private boolean again = true;
 
     public ListPane() throws MessagingException, FileNotFoundException {
@@ -40,7 +40,7 @@ public class ListPane extends BorderPane {
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new MamieMail();
+        mamieMail = new GMail();
 
         this.send.setOnAction(event -> {
             send.setText("En attente de la réponse du serveur...");

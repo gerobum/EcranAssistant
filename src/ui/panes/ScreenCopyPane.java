@@ -14,7 +14,7 @@ import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import mail.MamieMail;
+import mail.GMail;
 import threads.SendACommandeAndWaitForResultTask;
 
 /**
@@ -28,7 +28,7 @@ public class ScreenCopyPane extends BorderPane {
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
     private final ProgressBar pbsec;
-    private final MamieMail mamieMail;
+    private final GMail mamieMail;
     private boolean again = true;
 
     public ScreenCopyPane() throws MessagingException, FileNotFoundException {
@@ -40,7 +40,7 @@ public class ScreenCopyPane extends BorderPane {
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new MamieMail();
+        mamieMail = new GMail();
 
         this.send.setOnAction(event -> {
             //send.setText("En attente de la réponse du serveur...");

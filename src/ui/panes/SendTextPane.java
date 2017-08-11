@@ -16,7 +16,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import mail.MamieMail;
+import mail.GMail;
 import ui.ctrls.DateCtrl;
 import ui.ctrls.DayCtrl;
 import ui.ctrls.HoursCtrl;
@@ -67,7 +67,7 @@ public class SendTextPane extends GridPane implements EventHandler<ActionEvent> 
                     textToSend = String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
                             end.getText(), day.getText(), text.getText());
                 }
-                MamieMail.send("MSG", textToSend);
+                GMail.send("MSG", textToSend);
                 System.out.println(textToSend);
                 initAll();
             } catch (FileNotFoundException ex) {

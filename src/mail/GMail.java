@@ -25,7 +25,7 @@ import javax.mail.internet.MimeMessage;
  *
  * @author maillot
  */
-public class MamieMail {
+public class GMail {
 
     private final Folder inbox;
     private final Store store;
@@ -42,7 +42,7 @@ public class MamieMail {
         }
     }
 
-    public MamieMail() throws MessagingException, FileNotFoundException {
+    public GMail() throws MessagingException, FileNotFoundException {
         Properties props = new Properties();
 
         //props.load(new FileInputStream(new File("C:\\smtp.properties")));
