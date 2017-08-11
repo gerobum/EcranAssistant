@@ -7,6 +7,7 @@ package ui.ctrls;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -22,7 +23,6 @@ public class DateCtrl extends GridPane {
 
     private final DatePicker D;
     private final CheckBox C;
-    
 
     public DateCtrl() {
         this(null);
@@ -31,7 +31,7 @@ public class DateCtrl extends GridPane {
     public DateCtrl(String msg) {
         C = new CheckBox();
         D = new DatePicker(LocalDate.now());
-       
+
         int c = 0;
 
         if (msg != null) {
@@ -42,22 +42,22 @@ public class DateCtrl extends GridPane {
         FlowPane fl = new FlowPane();
         fl.getChildren().add(C);
         fl.getChildren().add(D);
-        
-        
+
         add(fl, c++, 0);
-        
+
         D.setDisable(!C.isSelected());
 
         C.setOnAction(value -> {
-            if (C.isSelected())
-            D.setDisable(false);
-            else {
+            if (C.isSelected()) {
+                D.setDisable(false);
+                System.out.println(D.getValue());
+            } else {
                 D.setValue(LocalDate.now());
                 D.setDisable(true);
             }
         });
     }
-    
+
     public void init() {
         C.setSelected(false);
         D.setDisable(true);

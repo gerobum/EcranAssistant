@@ -5,9 +5,13 @@
  */
 package uses;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,4 +29,21 @@ public class Usefull {
         }
                        
     }
+
+    public static void changeTo(String name) throws FileNotFoundException {
+        String adresse, passwd;
+        try (Scanner in = new Scanner(new File(".adresse-"+name))) {
+            adresse = in.nextLine();
+        }
+        try (Scanner in = new Scanner(new File(".passwd-"+name))) {
+            passwd = in.nextLine();
+        }
+        
+        try (PrintWriter out = new PrintWriter(".adresse")) {
+            out.println(adresse);
+        }
+        try (PrintWriter out = new PrintWriter(".passwd")) {
+            out.println(passwd);
+        }
+   }
 }

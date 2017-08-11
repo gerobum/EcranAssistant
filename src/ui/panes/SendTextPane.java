@@ -55,9 +55,9 @@ public class SendTextPane extends GridPane {
             try {
                 MamieMail.send("MSG", String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
                         end.getText(), day.getText(), text.getText()));
+                System.out.println(String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
+                end.getText(), day.getText(), text.getText()));
                 initAll();
-                /*System.out.println(String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
-                end.getText(), day.getText(), text.getText()));*/
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(SendTextPane.class.getName()).log(Level.SEVERE, null, ex);
             }
