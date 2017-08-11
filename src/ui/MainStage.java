@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javax.mail.MessagingException;
 import ui.panes.CardPane;
+import ui.panes.CommandPane;
 import ui.panes.ListPane;
 import ui.panes.ScrotPane;
 
@@ -52,6 +53,7 @@ public class MainStage extends Application {
         card.add("Copie d'écran", new ScrotPane());
         card.add("Envoi de messages", new SendTextPane());
         card.add("Liste des messages", new ListPane());
+        card.add("Commande", new CommandPane());
         
         //card.add("FONT", new FontSizePane());
     }

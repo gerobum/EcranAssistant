@@ -7,6 +7,7 @@ package mail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Properties;
 import java.util.Scanner;
@@ -28,12 +29,13 @@ public class MamieMail {
 
     private final Folder inbox;
     private final Store store;
-    
+
     private static String getAdresse() throws FileNotFoundException {
         try (Scanner in = new Scanner(new File(".adresse"))) {
             return in.next();
         }
     }
+
     private static String getMdp() throws FileNotFoundException {
         try (Scanner in = new Scanner(new File(".passwd"))) {
             return in.next();
@@ -46,7 +48,7 @@ public class MamieMail {
         //props.load(new FileInputStream(new File("C:\\smtp.properties")));
         Session session = Session.getDefaultInstance(props, null);
 
-        store = session.getStore("imaps");        
+        store = session.getStore("imaps");
 
         store.connect("smtp.gmail.com", getAdresse(), getMdp());
 
@@ -81,7 +83,11 @@ public class MamieMail {
         try {
             Message[] message = inbox.getMessages();
             int i = message.length - 1;
+            System.out.println("Recherche : " + subject);
+            System.out.println("avant : " + DateFormat.getDateTimeInstance().format(date));
             while (i >= 0 && message[i].getReceivedDate().after(date)) {
+                System.out.println("Msg LU: " + message[i].getSubject());
+                System.out.println("Sa date : " + DateFormat.getDateTimeInstance().format(message[i].getReceivedDate()));
                 if (message[i].getSubject().equals(subject)) {
                     return message[i];
                 }

@@ -5,8 +5,8 @@
  */
 package ui.ctrls;
 
+
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -14,12 +14,15 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import interfaces.Identifiable;
+import javafx.event.EventHandler;
+import javafx.scene.control.Control;
 
 /**
  *
  * @author maillot
  */
-public class DateCtrl extends GridPane {
+public class DateCtrl extends GridPane implements Identifiable {
 
     private final DatePicker D;
     private final CheckBox C;
@@ -68,4 +71,14 @@ public class DateCtrl extends GridPane {
         LocalDate ld = D.getValue();
         return String.format("%s/%s/%s", ld.getDayOfMonth(), ld.getMonthValue(), ld.getYear());
     }
+
+    public void addAction(EventHandler<ActionEvent> event) {
+        C.addEventHandler(ActionEvent.ACTION, event);
+    }
+
+    @Override
+    public Control getSource() {
+        return C;
+    }
+
 }

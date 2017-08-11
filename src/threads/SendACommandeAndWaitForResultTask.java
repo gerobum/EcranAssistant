@@ -35,9 +35,9 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
     }
 
 
-    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String commande, String attempting) throws MessagingException, FileNotFoundException {
+    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
-        this.command = commande;
+        this.command = subject;
         this.attempting = attempting;
         this.mamieMail = mamieMail;
         new Thread() {
@@ -45,7 +45,7 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
             public void run() {
                 try {
                     System.out.println("Envoi de la commande");
-                    MamieMail.send(commande);
+                    MamieMail.send(subject, body);
                     System.out.println("Commande envoyée");
                 } catch (FileNotFoundException ex) {
                     System.out.println("Erreur de commande");
@@ -57,6 +57,9 @@ public class SendACommandeAndWaitForResultTask extends Task<String> {
     }
 
     
+    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String subject, String attempting) throws MessagingException, FileNotFoundException {
+        this(mamieMail, date, subject, "", attempting);
+    } 
 
     @Override
     protected String call() throws Exception {

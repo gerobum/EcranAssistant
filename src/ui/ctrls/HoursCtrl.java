@@ -65,6 +65,8 @@ public class HoursCtrl extends GridPane {
             }
         });
     }
+    
+    
    
     public void init() {
         C.setSelected(false);

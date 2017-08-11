@@ -8,7 +8,10 @@ package ui.panes;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -22,7 +25,7 @@ import ui.ctrls.HoursCtrl;
  *
  * @author maillot
  */
-public class SendTextPane extends GridPane {
+public class SendTextPane extends GridPane implements EventHandler<ActionEvent> {
 
     private final DateCtrl date;
     private final HoursCtrl begin, end;
@@ -51,12 +54,21 @@ public class SendTextPane extends GridPane {
         send.setDisable(true);
         annuler.setDisable(true);
 
+        day.addAction(this);
+        date.addAction(this);
+
         send.setOnAction(value -> {
             try {
-                MamieMail.send("MSG", String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
-                        end.getText(), day.getText(), text.getText()));
-                System.out.println(String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
-                end.getText(), day.getText(), text.getText()));
+                String textToSend;
+                if (!day.getText().equals("*")) {
+                    textToSend = String.format("%s§%s§%s§%s", begin.getText(),
+                            end.getText(), day.getText(), text.getText());
+                } else {
+                    textToSend = String.format("%s§%s§%s§%s§%s", date.getText(), begin.getText(),
+                            end.getText(), day.getText(), text.getText());
+                }
+                MamieMail.send("MSG", textToSend);
+                System.out.println(textToSend);
                 initAll();
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(SendTextPane.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,7 +79,7 @@ public class SendTextPane extends GridPane {
             send.setDisable(text.getText().trim().isEmpty());
             annuler.setDisable(text.getText().trim().isEmpty());
         });
-        
+
         annuler.setOnAction(value -> {
             initAll();
         });
@@ -81,5 +93,19 @@ public class SendTextPane extends GridPane {
         text.setText("");
         send.setDisable(true);
         annuler.setDisable(true);
+    }
+
+    @Override
+    public void handle(ActionEvent event) {
+        if (event.getSource() == day.getSource()) {
+            if (!day.getText().equals("*")) {
+                date.init();
+            }
+        } else {
+            CheckBox C = (CheckBox) event.getSource();
+            if (C.isSelected()) {
+                day.init();
+            }
+        }
     }
 }

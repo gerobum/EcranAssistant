@@ -56,9 +56,9 @@ public class CardPane extends Pane {
                 if (gerobum.isSelected()) {
                     Usefull.changeTo("gerobum");
                 } else if (mamie_rasp.isSelected()) {
-                    Usefull.changeTo("mamie_rasp");
+                    Usefull.changeTo("mamie");
                 } else {
-                    Usefull.changeTo("yvan_rasp");
+                    Usefull.changeTo("yvan");
                 }
             } catch (FileNotFoundException e) {
                 Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e);
