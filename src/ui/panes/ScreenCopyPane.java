@@ -27,11 +27,11 @@ public class ScreenCopyPane extends BorderPane {
     private final ImageView image;
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
-    private final ProgressBar pbsec;
-    private final GMail mamieMail;
+    private final ProgressBar pbsec;    
     private boolean again = true;
+    private final CardPane parent;
 
-    public ScreenCopyPane() throws MessagingException, FileNotFoundException {
+    public ScreenCopyPane(CardPane parent) throws MessagingException, FileNotFoundException {
 
         send = new Button("Go");
         image = new ImageView();
@@ -40,14 +40,15 @@ public class ScreenCopyPane extends BorderPane {
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new GMail();
+        
+        this.parent = parent;
 
         this.send.setOnAction(event -> {
             //send.setText("En attente de la réponse du serveur...");
             System.out.println("SCROT");
             send.setDisable(true);
             try {
-                wfam = new SendACommandeAndWaitForResultTask(mamieMail, new Date(), "SCROT", "Copie d'écran");
+                wfam = new SendACommandeAndWaitForResultTask(this.parent.getGMail(), new Date(), "SCROT", "Copie d'écran");
                 System.out.println("demande de copie d'écran envoyée");
                 wfam.setOnSucceeded(value -> {
                     System.out.println("Copie d'écran reçue : ");

@@ -8,6 +8,8 @@ package ui.panes;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,6 +24,8 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Pair;
+import javax.mail.MessagingException;
+import mail.GMail;
 import uses.Usefull;
 
 /**
@@ -35,6 +39,7 @@ public class CardPane extends Pane {
     private final RadioButton gerobum, mamie_rasp, yvan_rasp;
     private final StackPane center = new StackPane();
     private final List<Pair<Button, Pane>> list = new LinkedList<>();
+    private GMail gerobumMail, mamieMail, yvanMail, gmail;
     private Group root;
 
     public CardPane() {
@@ -49,16 +54,34 @@ public class CardPane extends Pane {
         gerobum = new RadioButton("gerobum@gmail.com");
         mamie_rasp = new RadioButton("mamie.rasp@gmail.com");
         yvan_rasp = new RadioButton("yvan.rasp@gmail.com");
+
+        try {
+            Usefull.changeTo("gerobum");
+            gerobumMail = new GMail();
+            Usefull.changeTo("mamie");
+            mamieMail = new GMail();
+            Usefull.changeTo("yvan");
+            yvanMail = new GMail();
+        } catch (FileNotFoundException e) {
+            Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e.getMessage());
+            alert.showAndWait();
+        } catch (MessagingException ex) {
+            Logger.getLogger(CardPane.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         ToggleGroup tg = new ToggleGroup();
 
         EventHandler<ActionEvent> eh = (ActionEvent event) -> {
             try {
                 if (gerobum.isSelected()) {
                     Usefull.changeTo("gerobum");
+                    gmail = gerobumMail;
                 } else if (mamie_rasp.isSelected()) {
                     Usefull.changeTo("mamie");
+                    gmail = mamieMail;
                 } else {
                     Usefull.changeTo("yvan");
+                    gmail = yvanMail;
                 }
             } catch (FileNotFoundException e) {
                 Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e);
@@ -75,6 +98,7 @@ public class CardPane extends Pane {
         gerobum.setSelected(true);
         try {
             Usefull.changeTo("gerobum");
+            gmail = gerobumMail;
         } catch (FileNotFoundException e) {
             Alert alert = new Alert(AlertType.ERROR, "Ce fichier n'existe pas " + e.getMessage());
             alert.showAndWait();
@@ -113,6 +137,10 @@ public class CardPane extends Pane {
 
     public void setRoot(Group root) {
         this.root = root;
+    }
+    
+    public GMail getGMail() {
+        return gmail;
     }
 
 }

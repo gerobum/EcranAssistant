@@ -26,11 +26,11 @@ public class CommandPane extends BorderPane {
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
     private final ProgressBar pbsec;
-    private final GMail mamieMail;
     private boolean again = true;
     private final TextField command;
+    private final CardPane parent;
 
-    public CommandPane() throws MessagingException, FileNotFoundException {
+    public CommandPane(CardPane parent) throws MessagingException, FileNotFoundException {
         
         command = new TextField();
         send = new Button("Go");
@@ -43,7 +43,8 @@ public class CommandPane extends BorderPane {
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new GMail();
+        
+        this.parent = parent;
         
         
         
@@ -57,7 +58,7 @@ public class CommandPane extends BorderPane {
             send.setDisable(true);
             text.setText("");
             try {
-                wfam = new SendACommandeAndWaitForResultTask(mamieMail, new Date(), "COMMANDE", command.getText(), command.getText());
+                wfam = new SendACommandeAndWaitForResultTask(this.parent.getGMail(), new Date(), "COMMANDE", command.getText(), command.getText());
                 wfam.setOnSucceeded(value -> {
                     text.setText(wfam.getMessage());
                     //send.setText("Relancer une recherche");

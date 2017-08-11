@@ -50,10 +50,10 @@ public class MainStage extends Application {
     }
 
     private void addPanesToStack() throws MessagingException, FileNotFoundException {
-        card.add("Copie d'écran", new ScreenCopyPane());
+        card.add("Copie d'écran", new ScreenCopyPane(card));
         card.add("Envoi de messages", new SendTextPane());
-        card.add("Liste des messages", new ListPane());
-        card.add("Commande", new CommandPane());
+        card.add("Liste des messages", new ListPane(card));
+        card.add("Commande", new CommandPane(card));
         
         //card.add("FONT", new FontSizePane());
     }

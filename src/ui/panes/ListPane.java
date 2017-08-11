@@ -30,17 +30,17 @@ public class ListPane extends BorderPane {
     private SendACommandeAndWaitForResultTask wfam;
     private final ProgressBar pbmn;
     private final ProgressBar pbsec;
-    private final GMail mamieMail;
     private boolean again = true;
+    private final CardPane parent;
 
-    public ListPane() throws MessagingException, FileNotFoundException {
+    public ListPane(CardPane parent) throws MessagingException, FileNotFoundException {
         send = new Button("Lancer la recherche");
         text = new TextArea();
         pbmn = new ProgressBar(0);
         pbsec = new ProgressBar(0);
         pbmn.setPrefWidth(600);
         pbsec.setPrefWidth(600);
-        mamieMail = new GMail();
+        this.parent = parent;
 
         this.send.setOnAction(event -> {
             send.setText("En attente de la réponse du serveur...");
@@ -48,7 +48,7 @@ public class ListPane extends BorderPane {
             text.setText("");
             try {
                 System.out.println("Debut task");
-                wfam = new SendACommandeAndWaitForResultTask(mamieMail, new Date(), "CAT LMES", "Contenu de lmes");
+                wfam = new SendACommandeAndWaitForResultTask(this.parent.getGMail(), new Date(), "CAT LMES", "Contenu de lmes");
                 wfam.setOnSucceeded(value -> {
                     text.setText(wfam.getMessage());
                     send.setText("Relancer une recherche");

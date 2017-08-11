@@ -15,7 +15,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import mail.GMail;
 import ui.ctrls.DateCtrl;
 import ui.ctrls.DayCtrl;
