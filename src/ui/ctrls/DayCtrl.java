@@ -59,6 +59,13 @@ public class DayCtrl extends GridPane {
         });
     }
 
+   
+    public void init() {
+        C.setSelected(false);
+        D.setDisable(true);
+        D.getSelectionModel().select(0);
+    }
+    
     public String getText() {
         return D.getSelectionModel().getSelectedItem().abv();
     }

@@ -5,11 +5,16 @@
  */
 package threads;
 
+import java.io.FileNotFoundException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import mail.MamieMail;
+import static uses.Usefull.conversionEncoding;
 
 /**
  *
@@ -18,59 +23,101 @@ import mail.MamieMail;
 public class SendACommandeAndWaitForResultTask extends Task<String> {
 
     private final Date date;
-    private final String commande;
+    private final String command;
+    private final String attempting;
     private boolean finished = false;
-    private Message message = null;
     private final MamieMail mamieMail;
-    private int numberOfTries = 0;
     public final int MAX_TRIES = 10;
+    private final long DURATION = 60000; // 1 minute    
 
     public boolean isFinished() {
         return finished;
     }
 
-    private final long DURATION = 60000; // 1 minute    
 
-    public SendACommandeAndWaitForResultTask(Date date, String commande) throws MessagingException {
+    public SendACommandeAndWaitForResultTask(MamieMail mamieMail, Date date, String commande, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
-        this.commande = commande;
-        mamieMail = new MamieMail();
-        MamieMail.send("COMMANDE", commande);
+        this.command = commande;
+        this.attempting = attempting;
+        this.mamieMail = mamieMail;
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    System.out.println("Envoi de la commande");
+                    MamieMail.send(commande);
+                    System.out.println("Commande envoyée");
+                } catch (FileNotFoundException ex) {
+                    System.out.println("Erreur de commande");
+                    finished = true;
+                }
+            }
+        }.start();
+        
     }
+
+    
 
     @Override
     protected String call() throws Exception {
-        stopTiming();             
+        System.out.println("Recherche dans la boîte mail...");
+        stopTiming();          
+        updateMessage("Recherche dans la boîte mail...");
+        int nbTries = 0;
+        updateProgress(nbTries, MAX_TRIES);
         while (!finished) {
             try {
+                System.out.println("Dans la boucle");
                 Thread.sleep(DURATION);
-                ++numberOfTries;
-                message = mamieMail.getLastMessagesAfter(commande, date);
+                ++nbTries;
+                updateProgress(nbTries, MAX_TRIES);
+                System.out.println("Essai °" + nbTries);
+                Message message = mamieMail.getLastMessagesAfter(attempting, date);
                 if (message != null) {
                     finished = true;
                 }
             } catch (InterruptedException ex) {
-                message = mamieMail.getLastMessagesAfter(commande, date);
+                Message message = mamieMail.getLastMessagesAfter(attempting, date);
                 if (message != null) {
                     finished = true;
                 }
             }
         }
-        message = mamieMail.getLastMessagesAfter(commande, date);
+        updateProgress(MAX_TRIES, MAX_TRIES);
+        Message message = mamieMail.getLastMessagesAfter(attempting, date);
+        if (message == null) {
+                    updateMessage("Problème avec le serveur !");
+                } else {
+                    System.out.println(message.getSubject());
+
+                    Multipart mp = (Multipart) message.getContent();
+
+                    String result = mp.getBodyPart(0).getContent().toString();
+                    String convertedResult = conversionEncoding(result, "ISO-8859-1", "UTF-8");
+
+                    if (convertedResult.equals("cat: lmes: Aucun fichier ou dossier de ce type")) {
+                        convertedResult = "Ecran noir";
+                    } else if (convertedResult.trim().isEmpty()) {
+                        convertedResult = "Ecran vide";
+                    }
+                    System.out.println(convertedResult);
+
+                    updateMessage(convertedResult);
+                    updateValue(convertedResult);
+                }
         finished = true;
         return message.toString();
     }
 
-    public int getNumberOfTries() {
-        return numberOfTries;
-    }
 
     private void stopTiming() {
         new Thread() {
             @Override
             public void run() {
                 try {
+                    System.out.println("Début du timing");
                     sleep(MAX_TRIES * DURATION);
+                    System.out.println("Fin du timing");
                     finished = false;
                 } catch (InterruptedException ex) {
                 }

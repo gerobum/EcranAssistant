@@ -5,14 +5,14 @@
  */
 package ui;
 
+import java.io.FileNotFoundException;
 import ui.panes.SendTextPane;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javax.mail.MessagingException;
 import ui.panes.CardPane;
-import ui.panes.FontSizePane;
 import ui.panes.ListPane;
 import ui.panes.ScrotPane;
 
@@ -48,7 +48,7 @@ public class MainStage extends Application {
         Application.launch(MainStage.class, args);
     }
 
-    private void addPanesToStack() {
+    private void addPanesToStack() throws MessagingException, FileNotFoundException {
         card.add("Copie d'écran", new ScrotPane());
         card.add("Envoi de messages", new SendTextPane());
         card.add("Liste des messages", new ListPane());

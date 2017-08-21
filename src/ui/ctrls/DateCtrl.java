@@ -57,6 +57,12 @@ public class DateCtrl extends GridPane {
             }
         });
     }
+    
+    public void init() {
+        C.setSelected(false);
+        D.setDisable(true);
+        D.setValue(LocalDate.now());
+    }
 
     public String getText() {
         LocalDate ld = D.getValue();

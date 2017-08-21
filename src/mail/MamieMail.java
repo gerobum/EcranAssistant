@@ -29,12 +29,12 @@ public class MamieMail {
     private final Folder inbox;
     private final Store store;
     
-    private String getAdresse() throws FileNotFoundException {
+    private static String getAdresse() throws FileNotFoundException {
         try (Scanner in = new Scanner(new File(".adresse"))) {
             return in.next();
         }
     }
-    private String getMdp() throws FileNotFoundException {
+    private static String getMdp() throws FileNotFoundException {
         try (Scanner in = new Scanner(new File(".passwd"))) {
             return in.next();
         }
@@ -123,13 +123,13 @@ public class MamieMail {
         }
     }
 
-    public static void send(String subject) {
+    public static void send(String subject) throws FileNotFoundException {
         send(subject, "");
     }
 
-    public static void send(String subject, String text) {
-        final String username = "mamie.rasp@gmail.com";
-        final String password = "5z5s8v0ehw";
+    public static void send(String subject, String text) throws FileNotFoundException {
+        final String username = getAdresse();
+        final String password = getMdp();
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -148,9 +148,9 @@ public class MamieMail {
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("mamie.rasp@gmail.com"));
+            message.setFrom(new InternetAddress(getAdresse()));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("mamie.rasp@gmail.com"));
+                    InternetAddress.parse(getAdresse()));
             message.setSubject(subject);
             message.setText(text);
 
@@ -160,32 +160,4 @@ public class MamieMail {
             throw new RuntimeException(e);
         }
     }
-
-    /*
-    public static void main(String[] args) throws MessagingException, IOException {
- 
-
-        MamieMail mm = new MamieMail();
-        System.out.println("NEW");
-        Message m = mm.getLastMessages("cat lmes");
-        System.out.println(m.getSubject());
-        Multipart mp = (Multipart) m.getContent();
-        
-        System.out.println(mp.getBodyPart(0).getContent());
-        for (Message message : mm.getMessages()) {
-            System.out.println(message.getSubject());
-        }
-        
-        mm.close();
-        System.out.println("CLOSE");
-    }
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        byte[] b = "éèç$§".getBytes("UTF-8");
-        //Charset def = Charset.defaultCharset();
-        Charset cs = Charset.forName("UTF-8");
-        ByteBuffer bb = ByteBuffer.wrap(b);
-        CharBuffer cb = cs.decode(bb);
-        String s = cb.toString();
-        System.out.println(s);
-    }*/
 }

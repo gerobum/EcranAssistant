@@ -1,5 +1,11 @@
 .adresse
 .passwd
+.adresse-yvan
+.passwd-yvan
+.adresse-mamie
+.passwd-mamie
+.adresse-gerobum
+.passwd-gerobum
 javax.mail.jar
 nbproject/private/
 build/

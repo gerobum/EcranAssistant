@@ -5,6 +5,9 @@
  */
 package ui.panes;
 
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import mail.MamieMail;
@@ -19,10 +22,14 @@ public class ScrotPane extends BorderPane {
     public ScrotPane() {
         this.send = new Button("Copie d'écran");
         this.send.setOnAction(event -> {
-            MamieMail.send("SCROT");
+            try {
+                MamieMail.send("SCROT");
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(ScrotPane.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
         });
-        this.getChildren().add(send);
+        this.setTop(send);
     }
     
     
