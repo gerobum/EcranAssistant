@@ -3,13 +3,20 @@ package ui.panes;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -38,8 +45,10 @@ public class ScreenCopyPane extends BorderPane {
 
         pbmn = new ProgressBar(0);
         pbsec = new ProgressBar(0);
+        pbmn.setPrefWidth(Double.MAX_VALUE);
+        pbsec.setPrefWidth(Double.MAX_VALUE);
         pbmn.setPrefWidth(600);
-        pbsec.setPrefWidth(600);
+        pbsec.setPrefWidth(700);
         
         this.parent = parent;
 
@@ -114,6 +123,8 @@ public class ScreenCopyPane extends BorderPane {
         this.setTop(send);
         this.setCenter(image);
         GridPane south = new GridPane();
+        south.setBackground(new Background(new BackgroundFill(Color.CHOCOLATE, CornerRadii.EMPTY, Insets.EMPTY)));
+        south.setPrefWidth(Double.MAX_VALUE);
         south.addRow(0, pbsec);
         south.addRow(1, pbmn);
         this.setBottom(south);

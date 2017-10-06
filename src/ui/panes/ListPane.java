@@ -38,8 +38,8 @@ public class ListPane extends BorderPane {
         text = new TextArea();
         pbmn = new ProgressBar(0);
         pbsec = new ProgressBar(0);
-        pbmn.setPrefWidth(600);
-        pbsec.setPrefWidth(600);
+        pbmn.setPrefWidth(Double.MAX_VALUE);
+        pbsec.setPrefWidth(Double.MAX_VALUE);
         this.parent = parent;
 
         this.send.setOnAction(event -> {

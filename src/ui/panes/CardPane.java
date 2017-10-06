@@ -32,20 +32,22 @@ import uses.Usefull;
  *
  * @author maillot
  */
-public class CardPane extends Pane {
+public class CardPane extends BorderPane {
 
-    private final BorderPane mainPane = new BorderPane();
     private final FlowPane north = new FlowPane();
     private final RadioButton gerobum, mamie_rasp, yvan_rasp;
     private final StackPane center = new StackPane();
     private final List<Pair<Button, Pane>> list = new LinkedList<>();
     private GMail gerobumMail, mamieMail, yvanMail, gmail;
-    private Group root;
+    private Pane root;
 
     public CardPane() {
-        mainPane.setTop(north);
-        mainPane.setCenter(center);
-        super.getChildren().add(mainPane);
+        //setPrefWidth(Double.MAX_VALUE);
+        setTop(north);
+        setCenter(center);
+        north.setPrefWidth(Double.MAX_VALUE);
+        //center.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
         /*north.setStyle("-fx-background-color: linear-gradient(to bottom, #f2f2f2, #d4d4d4);"
                 + 
                 " -fx-border: 12px solid; -fx-border-color: black; -fx-background-radius: 0.0;"
@@ -107,11 +109,13 @@ public class CardPane extends Pane {
         }
 
         FlowPane south = new FlowPane(mamie_rasp, yvan_rasp, gerobum);
+        south.setPrefWidth(Double.MAX_VALUE);
         south.setHgap(20);
-        mainPane.setBottom(south);
+        setBottom(south);
     }
 
     public void add(String title, Pane pane) {
+        pane.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
         Pair<Button, Pane> pair = new Pair(new Button(title), pane);
         north.getChildren().add(pair.getKey());
         center.getChildren().add(pane);
@@ -137,7 +141,7 @@ public class CardPane extends Pane {
         }
     }
 
-    public void setRoot(Group root) {
+    public void setRoot(Pane root) {
         this.root = root;
     }
     

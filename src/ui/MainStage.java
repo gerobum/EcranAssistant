@@ -10,6 +10,7 @@ import ui.panes.SendTextPane;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javax.mail.MessagingException;
 import ui.panes.CardPane;
@@ -32,7 +33,7 @@ public class MainStage extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Ecran distant");                
 
-        Group root = new Group();
+        StackPane root = new StackPane();
         Scene scene = new Scene(root);       
         
         addPanesToStack();
@@ -42,7 +43,7 @@ public class MainStage extends Application {
         
         primaryStage.setScene(scene);
         //primaryStage.setVisible(true);  
-        primaryStage.sizeToScene();
+        //primaryStage.sizeToScene();
         primaryStage.widthProperty().addListener(p -> {
             primaryStage.sizeToScene();
             System.out.println("resizing width");

@@ -41,13 +41,11 @@ public class CommandPane extends BorderPane {
         command.setPrefWidth(560);
         pbmn = new ProgressBar(0);
         pbsec = new ProgressBar(0);
-        pbmn.setPrefWidth(600);
-        pbsec.setPrefWidth(600);
+        pbmn.setPrefWidth(Double.MAX_VALUE);
+        pbsec.setPrefWidth(Double.MAX_VALUE);
         
         this.parent = parent;
-        
-        
-        
+                        
         command.setOnKeyTyped(value -> {
             send.setDisable(command.getText().trim().isEmpty());
             System.out.println("send.setDisable("+command.getText().trim().isEmpty()+");");

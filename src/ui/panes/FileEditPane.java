@@ -7,13 +7,18 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javax.mail.MessagingException;
 import mail.GMail;
 import threads.SendACommandeAndWaitForResultTask;
@@ -42,13 +47,16 @@ public class FileEditPane extends BorderPane {
         cancel.setVisible(false);
         text = new TextArea();
         text.setEditable(false);
+        text.setBackground(new Background(new BackgroundFill(Color.BISQUE, CornerRadii.EMPTY, Insets.EMPTY)));
 
         FlowPane top = new FlowPane(fileName, send, cancel);
         fileName.setPrefWidth(560);
         pbmn = new ProgressBar(0);
         pbsec = new ProgressBar(0);
-        //pbmn.setPrefWidth(Double.MAX_VALUE);
-        //pbsec.setPrefWidth(Double.MAX_VALUE);
+        pbmn.setPrefWidth(Double.MAX_VALUE);
+        pbsec.setPrefWidth(Double.MAX_VALUE);
+        text.setMaxSize(800, 600);
+        text.setPrefSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         this.parent = parent;
 
