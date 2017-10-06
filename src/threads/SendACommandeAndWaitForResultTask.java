@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package threads;
 
 import java.io.FileNotFoundException;
@@ -23,7 +19,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     private final Date date;
     private final String attempting;
     private boolean finished = false;
-    private final GMail mamieMail;
+    private final GMail gmail;
     public final int MAX_TRIES = 3;
     private final long DURATION = 30000; // 1/2 minute    
 
@@ -34,7 +30,7 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     /**
      * Envoi une commande et attend son résultat.
      *
-     * @param mamieMail
+     * @param gmail
      * @param date
      * @param subject
      * @param body
@@ -42,10 +38,10 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
      * @throws MessagingException
      * @throws FileNotFoundException
      */
-    public SendACommandeAndWaitForResultTask(GMail mamieMail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
+    public SendACommandeAndWaitForResultTask(GMail gmail, Date date, String subject, String body, String attempting) throws MessagingException, FileNotFoundException {
         this.date = date;
         this.attempting = attempting;
-        this.mamieMail = mamieMail;
+        this.gmail = gmail;
         new Thread() {
             @Override
             public void run() {
@@ -81,12 +77,12 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
                 ++nbTries;
                 updateProgress(nbTries, MAX_TRIES);
                 System.out.println("Essai °" + nbTries);
-                message = mamieMail.getLastMessagesAfter(attempting, date);
+                message = gmail.getLastMessagesAfter(attempting, date);
                 if (message != null) {
                     finished = true;
                 }
             } catch (InterruptedException ex) {
-                message = mamieMail.getLastMessagesAfter(attempting, date);
+                message = gmail.getLastMessagesAfter(attempting, date);
                 finished = true;
             }
         }
@@ -131,8 +127,8 @@ public class SendACommandeAndWaitForResultTask extends Task<Message> {
     }
 
     public void close() {
-        if (mamieMail != null) {
-            mamieMail.close();
+        if (gmail != null) {
+            gmail.close();
         }
     }
 
