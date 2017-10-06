@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javax.mail.MessagingException;
 import ui.panes.CardPane;
 import ui.panes.CommandPane;
+import ui.panes.FileEditPane;
 import ui.panes.ListPane;
 import ui.panes.ScreenCopyPane;
 import ui.panes.SupPane;
@@ -32,7 +33,7 @@ public class MainStage extends Application {
         primaryStage.setTitle("Ecran distant");                
 
         Group root = new Group();
-        Scene scene = new Scene(root/*, 300, 250*/);
+        Scene scene = new Scene(root);       
         
         addPanesToStack();
         card.setRoot(root);
@@ -42,6 +43,14 @@ public class MainStage extends Application {
         primaryStage.setScene(scene);
         //primaryStage.setVisible(true);  
         primaryStage.sizeToScene();
+        primaryStage.widthProperty().addListener(p -> {
+            primaryStage.sizeToScene();
+            System.out.println("resizing width");
+        });
+        primaryStage.heightProperty().addListener(p -> {
+            primaryStage.sizeToScene();
+            System.out.println("resizing height");
+        });
         primaryStage.show();
 
     }
@@ -56,6 +65,7 @@ public class MainStage extends Application {
         card.add("Liste des messages", new ListPane(card));
         card.add("Commande", new CommandPane(card));
         card.add("Suppression", new SupPane());
+        card.add("Edition de fichier", new FileEditPane(card));
         
         //card.add("FONT", new FontSizePane());
     }

@@ -46,9 +46,11 @@ public class CardPane extends Pane {
         mainPane.setTop(north);
         mainPane.setCenter(center);
         super.getChildren().add(mainPane);
-        north.setStyle(/*"-fx-background-color: linear-gradient(to bottom, #f2f2f2, #d4d4d4);"
-                + */" -fx-border: 12px solid; -fx-border-color: black; -fx-background-radius: 0.0;"
-                + " -fx-border-radius: 0.0");
+        /*north.setStyle("-fx-background-color: linear-gradient(to bottom, #f2f2f2, #d4d4d4);"
+                + 
+                " -fx-border: 12px solid; -fx-border-color: black; -fx-background-radius: 0.0;"
+                + " -fx-border-radius: 0.0");*/
+        //north.setPrefWidth(Double.MAX_VALUE);
         BorderPane.setMargin(center, new Insets(8, 0, 0, 0));
 
         gerobum = new RadioButton("gerobum@gmail.com");
