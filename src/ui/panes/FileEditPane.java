@@ -112,7 +112,7 @@ public class FileEditPane extends BorderPane {
                 text.setEditable(false);
                 send.setDisable(false);
                 fileName.setDisable(false);
-
+                cancel.setVisible(false);
             }
         });
 
